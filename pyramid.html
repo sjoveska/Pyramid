@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Dialog - Default functionality</title>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <style type="text/css">
+   label{
+        display:  inline-block;
+        width: 100px;
+        margin: 5px;
+   }
+   input{
+        width: 90px;
+        margin: 5px;
+   }
+   li:hover{cursor: pointer;}
+      #feedback { font-size: 1.4em; }
+      .selectable .ui-selecting{ background: #FECA40; }
+      .selectable .ui-selected{ background: #F39814; color: white; }
+      .selectable{ list-style-type: none; margin: 0; padding: 0; width: 40%; display: inline-block;}
+      .selectable li{ margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }
+    .content{width:300px;background:#eef; padding: 5px; border:1px gray dotted; font-size: 1.4em;}
+  </style>
+
+  <script type="text/javascript">
+
+	var data = [
+      {
+         value: "oblivion",
+         label: "Oblivion",
+         desc: "A veteran assigned to extract Earth's remaining resources begins to question what he knows about his mission and himself."
+       },
+       {
+         value: "enders-game",
+         label: "Ender's Game",
+         desc: "Young Ender Wiggin is recruited by the International Military to lead the fight against the Formics, a genocidal alien race which nearly annihilated the human race in a previous invasion."
+       },
+       {
+         value: "elysium",
+         label: "Elysium",
+         desc: "In the year 2154, the very wealthy live on a man-made space station while the rest of the population resides on a ruined Earth. A man takes on a mission that could bring equality to the polarized worlds."
+       },
+       {
+         value: "edge-of-tomorrow",
+         label: "Edge of Tomorrow",
+         desc: "A military officer is brought into an alien war against an extraterrestrial enemy who can reset the day and know the future. When this officer is enabled with the same power, he teams up with a Special Forces warrior to try and end the war."
+       }
+     ];
+
+     $(document).ready(function(){
+     	$("#low-level").hide();
+
+     	var index = -1;
+     	$.each(data, function(index, item){
+
+     		$(".selectable").append("<li class='ui-widget-content' data-index="+index+">"+item.label+"</li>");
+
+     	});
+
+     	$(".selectable").selectable();
+
+     	$('.selectable li').mousedown(function(){
+
+     		index = parseInt($(this).attr('data-index'));
+     		showData(index);
+
+     		$("#low-level").show();
+ 			$("#high-level").hide();
+     	});
+
+
+     	$('#next').click(function(){
+     		index = (index + 1) % data.length;
+     		$(".ui-selected").toggleClass(".ui-selected");
+     		$($('.selectable li')[index]).toggleClass(".ui-selected");
+     		showData(index);
+     	});
+
+     	$('#prev').click(function(){
+     		index = index - 1;
+     		index = index < 0 ? data.length - 1 : index; 
+     		$(".ui-selected").toggleClass(".ui-selected");
+     		$($('.selectable li')[index]).toggleClass(".ui-selected");
+     		showData(index);
+     	});
+
+     	$('#top').click(function(){
+ 			$("#low-level").hide();
+ 			$("#high-level").show();
+     	});
+
+     });
+
+     function showData(index){
+     	console.log(data[index].label);
+ 		var item = data[index];
+
+ 		$("#title").html(item.label);
+ 		$("#desc").html(item.desc);
+     }
+  </script>
+</head>
+<body>
+
+<div id="high-level">
+
+<ol class='selectable'>
+</ol>
+	
+</div>
+
+<div id="low-level">
+	<div>
+		<input id="prev" value="prev" type="button"/>
+		<input id="top" value="top" type="button"/>
+		<input id="next" value="next" type="button"/>
+	</div>
+	<label>Title:</label>
+	<div id="title" class="content"></div>
+	<label>Desc:</label>
+	<div id="desc" class="content"></div>
+	
+</div>
+ 
+ 
+</body>
+</html>
